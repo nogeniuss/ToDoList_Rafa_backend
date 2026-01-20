@@ -5,7 +5,6 @@ import { ValidationPipe } from '@nestjs/common'
 import { swaggerAuth } from "./shared/middlewares/swagger-auth.middleware"
 import { DaoMaster } from "./database/dao-master";
 
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -29,20 +28,24 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
+  // ✅ CORS CORRIGIDO
   app.enableCors({
     origin: [
-      'https://todolist-backend-w4uu.onrender.com/',
-      'https://todolistrafa.vercel.app/'
+      'http://localhost:5173',              // Desenvolvimento local
+      'https://todolistrafa.vercel.app'     
     ],
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
-  await app.listen(3000);
+  // ✅ Usar porta do ambiente (Render)
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
+
+  console.log(`🚀 Servidor rodando na porta ${port}`);
 
   const dao = new DaoMaster();
   await dao.createTables();
 }
 bootstrap();
-
-
-
