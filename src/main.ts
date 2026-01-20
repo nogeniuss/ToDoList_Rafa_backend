@@ -31,8 +31,8 @@ async function bootstrap() {
 
   app.enableCors({
     origin: [
-      'https://todolistrafa.vercel.app/',
-      'http://localhost:3000'
+      'https://todolist-backend-w4uu.onrender.com/',
+      'https://todolistrafa.vercel.app/'
     ],
     credentials: true,
   });
